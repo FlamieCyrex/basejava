@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 /**
  * Array based storage for Resumes
  */
@@ -26,6 +28,15 @@ public class ArrayStorage {
     }
 
     void delete(String uuid) {
+        int count = 0;
+        for (Resume resume : storage) {
+            if (Objects.equals(resume.uuid, uuid)) {
+                break;
+            } else count++;
+        }
+        storage[count] = storage[ResumeCountering - 1];
+        storage[ResumeCountering - 1] = null;
+        ResumeCountering--;
     }
 
     /**
