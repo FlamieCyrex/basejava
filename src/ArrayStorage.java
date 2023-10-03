@@ -20,14 +20,12 @@ public class ArrayStorage {
     }
 
     Resume get(String uuid) {
-        Resume NestedResume = null;
         for (Resume resume : storage) {
             if (resume == null || resume.toString().equals(uuid)) {
-                NestedResume = resume;
-                break;
+                return resume;
             }
         }
-        return NestedResume;
+        return null;
     }
 
     void delete(String uuid) {
