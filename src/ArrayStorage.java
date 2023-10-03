@@ -22,7 +22,7 @@ public class ArrayStorage {
     Resume get(String uuid) {
         Resume NestedResume = null;
         for (Resume resume : storage) {
-            if (resume.toString().equals(uuid)) {
+            if (resume == null || resume.toString().equals(uuid)) {
                 NestedResume = resume;
                 break;
             }
