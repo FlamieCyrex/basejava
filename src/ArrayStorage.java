@@ -10,6 +10,8 @@ public class ArrayStorage {
     int ResumeCountering = 0;
 
     void clear() {
+        Arrays.fill(storage, null);
+        ResumeCountering = 0;
     }
 
     void save(Resume r) {
@@ -44,7 +46,7 @@ public class ArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     Resume[] getAll() {
-        return Arrays.copyOf(storage,size());
+        return Arrays.copyOf(storage, size());
     }
 
     int size() {
