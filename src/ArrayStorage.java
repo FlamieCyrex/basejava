@@ -7,16 +7,16 @@ import java.util.Objects;
 public class ArrayStorage {
     Resume[] storage = new Resume[10000];
 
-    int ResumeCountering = 0;
+    int count = 0;
 
     void clear() {
-        Arrays.fill(storage, null);
-        ResumeCountering = 0;
+        Arrays.fill(storage,0,count-1,null);
+        count = 0;
     }
 
     void save(Resume r) {
-        storage[ResumeCountering] = r;
-        ResumeCountering++;
+        storage[count] = r;
+        count++;
     }
 
     Resume get(String uuid) {
@@ -37,9 +37,9 @@ public class ArrayStorage {
                 break;
             } else count++;
         }
-        storage[count] = storage[ResumeCountering - 1];
-        storage[ResumeCountering - 1] = null;
-        ResumeCountering--;
+        storage[count] = storage[this.count - 1];
+        storage[this.count - 1] = null;
+        this.count--;
     }
 
     /**
@@ -50,6 +50,6 @@ public class ArrayStorage {
     }
 
     int size() {
-        return ResumeCountering;
+        return count;
     }
 }
