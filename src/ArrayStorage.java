@@ -44,11 +44,10 @@ public class ArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     Resume[] getAll() {
-        Resume [] RealResumeStorage = Arrays.copyOf(storage,size());
-        return RealResumeStorage;
+        return Arrays.copyOf(storage,size());
     }
 
     int size() {
-        return 0;
+        return ResumeCountering;
     }
 }
