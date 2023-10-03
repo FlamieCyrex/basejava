@@ -4,10 +4,14 @@
 public class ArrayStorage {
     Resume[] storage = new Resume[10000];
 
+    int ResumeCounter = 0;
+
     void clear() {
     }
 
     void save(Resume r) {
+        storage[ResumeCounter] = r;
+        ResumeCounter++;
     }
 
     Resume get(String uuid) {
