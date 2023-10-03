@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -43,7 +44,8 @@ public class ArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     Resume[] getAll() {
-        return new Resume[0];
+        Resume [] RealResumeStorage = Arrays.copyOf(storage,size());
+        return RealResumeStorage;
     }
 
     int size() {
