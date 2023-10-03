@@ -10,7 +10,7 @@ public class ArrayStorage {
     int count = 0;
 
     void clear() {
-        Arrays.fill(storage,0,count-1,null);
+        Arrays.fill(storage, 0, count - 1, null);
         count = 0;
     }
 
@@ -20,23 +20,25 @@ public class ArrayStorage {
     }
 
     Resume get(String uuid) {
-        for (int i = 0; i<count; i++){
-            if (storage [i].toString().equals(uuid))
+        for (int i = 0; i < count; i++) {
+            if (storage[i].toString().equals(uuid))
                 return storage[i];
         }
         return null;
     }
 
     void delete(String uuid) {
-        int count = 0;
-        for (Resume resume : storage) {
-            if (Objects.equals(resume.uuid, uuid)) {
-                break;
-            } else count++;
+        boolean isresumeexist = false;
+        for (int i = 0; i < count; i++) {
+            if (Objects.equals(storage[i].uuid, uuid)) {
+                storage[i] = storage[this.count - 1];
+                storage[this.count - 1] = null;
+                this.count--;
+                isresumeexist = true;
+            }
         }
-        storage[count] = storage[this.count - 1];
-        storage[this.count - 1] = null;
-        this.count--;
+        if (!isresumeexist)
+            System.out.println("There is no such resume in storage");
     }
 
     /**
