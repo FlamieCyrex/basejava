@@ -7,10 +7,10 @@ import java.util.Objects;
 public class ArrayStorage {
     Resume[] storage = new Resume[10000];
 
-    int count = 0;
+    int count;
 
     void clear() {
-        Arrays.fill(storage, 0, count - 1, null);
+        Arrays.fill(storage, 0, count, null);
         count = 0;
     }
 
@@ -21,24 +21,22 @@ public class ArrayStorage {
 
     Resume get(String uuid) {
         for (int i = 0; i < count; i++) {
-            if (storage[i].toString().equals(uuid))
-                return storage[i];
+            if (storage[i].toString().equals(uuid)) return storage[i];
         }
         return null;
     }
 
     void delete(String uuid) {
-        boolean isresumeexist = false;
+        boolean isResumeExist = false;
         for (int i = 0; i < count; i++) {
             if (Objects.equals(storage[i].uuid, uuid)) {
-                storage[i] = storage[this.count - 1];
-                storage[this.count - 1] = null;
-                this.count--;
-                isresumeexist = true;
+                storage[i] = storage[count - 1];
+                storage[count - 1] = null;
+                count--;
+                isResumeExist = true;
             }
         }
-        if (!isresumeexist)
-            System.out.println("There is no such resume in storage");
+        if (!isResumeExist) System.out.println("There is no such resume in storage");
     }
 
     /**
