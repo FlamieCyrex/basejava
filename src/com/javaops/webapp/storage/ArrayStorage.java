@@ -1,3 +1,7 @@
+package com.javaops.webapp.storage;
+
+import com.javaops.webapp.model.Resume;
+
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -9,24 +13,23 @@ public class ArrayStorage {
 
     int count;
 
-    void clear() {
+    public void clear() {
         Arrays.fill(storage, 0, count, null);
         count = 0;
     }
-
-    void save(Resume r) {
+    public void save(Resume r) {
         storage[count] = r;
         count++;
     }
 
-    Resume get(String uuid) {
+    public Resume get(String uuid) {
         for (int i = 0; i < count; i++) {
             if (storage[i].toString().equals(uuid)) return storage[i];
         }
         return null;
     }
 
-    void delete(String uuid) {
+    public void delete(String uuid) {
         boolean isResumeExist = false;
         for (int i = 0; i < count; i++) {
             if (Objects.equals(storage[i].uuid, uuid)) {
@@ -42,11 +45,11 @@ public class ArrayStorage {
     /**
      * @return array, contains only Resumes in storage (without null)
      */
-    Resume[] getAll() {
+    public Resume[] getAll() {
         return Arrays.copyOf(storage, count);
     }
 
-    int size() {
+    public int size() {
         return count;
     }
 }
