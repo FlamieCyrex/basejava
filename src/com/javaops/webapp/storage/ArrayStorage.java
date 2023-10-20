@@ -32,13 +32,27 @@ public class ArrayStorage {
 
     }
     public void save(Resume r) {
-        storage[count] = r;
-        count++;
+        boolean isResumeExist = false;
+        if (count <=9999) {
+            for (int i = 0; i < count; i++) {
+                if (storage[i].uuid.equals(r.uuid)) {
+                    isResumeExist = true;
+                    System.out.println("This resume already exists in the storage");
+                }
+            }
+            if (isResumeExist){
+                storage[count] = r;
+                count++;
+            }
+        }
+        else System.out.println("There is no free space in storage for saving resume");
+
     }
 
     public Resume get(String uuid) {
         for (int i = 0; i < count; i++) {
-            if (storage[i].toString().equals(uuid)) return storage[i];
+            if (storage[i].toString().equals(uuid))
+                return storage[i];
         }
         return null;
     }
