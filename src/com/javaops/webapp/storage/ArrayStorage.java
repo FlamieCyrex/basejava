@@ -17,6 +17,20 @@ public class ArrayStorage {
         Arrays.fill(storage, 0, count, null);
         count = 0;
     }
+
+    public void update(Resume r){
+        boolean isResumeExist = false;
+        for (int i = 0; i < count; i++) {
+            if (Objects.equals(storage[i].uuid, r.uuid)) {
+                storage[i] = r;
+                isResumeExist = true;
+                System.out.println("The resume was updated");
+            }
+        }
+        if (!isResumeExist) System.out.println("There is no such resume in storage for updating");
+
+
+    }
     public void save(Resume r) {
         storage[count] = r;
         count++;
@@ -33,7 +47,7 @@ public class ArrayStorage {
         boolean isResumeExist = false;
         for (int i = 0; i < count; i++) {
             if (Objects.equals(storage[i].uuid, uuid)) {
-                storage[i] = storage[count - 1];
+                storage[i].uuid = storage[count - 1].uuid;
                 storage[count - 1] = null;
                 count--;
                 isResumeExist = true;
