@@ -27,7 +27,7 @@ public class ArrayStorage {
                 System.out.println("The resume was updated");
             }
         }
-        if (!isResumeExist) System.out.println("There is no such resume in storage for updating");
+        if (!isResumeExist) System.out.println("There is no such resume in storage for updating (uuid: " + r.uuid + ")");
 
 
     }
@@ -37,7 +37,7 @@ public class ArrayStorage {
             for (int i = 0; i < count; i++) {
                 if (storage[i].uuid.equals(r.uuid)) {
                     isResumeExist = true;
-                    System.out.println("This resume already exists in the storage");
+                    System.out.println("This resume already exists in the storage (uuid: " + r.uuid + ")");
                 }
             }
             if (isResumeExist){
@@ -45,7 +45,7 @@ public class ArrayStorage {
                 count++;
             }
         }
-        else System.out.println("There is no free space in storage for saving resume");
+        else System.out.println("There is no free space in storage for saving resume (uuid: " + r.uuid + ")");
 
     }
 
@@ -67,7 +67,7 @@ public class ArrayStorage {
                 isResumeExist = true;
             }
         }
-        if (!isResumeExist) System.out.println("There is no such resume in storage");
+        if (!isResumeExist) System.out.println("There is no such resume in storage (uuid: "+ uuid + ")");
     }
 
     /**
