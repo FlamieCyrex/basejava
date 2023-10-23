@@ -12,7 +12,7 @@ public class ArrayStorage {
     protected final int STORAGE_LIMIT = 10000;
     private final Resume[] storage = new Resume[STORAGE_LIMIT];
 
-    int size;
+    private int size;
 
     public int getIndex(String uuid) {
         for (int i = 0; i < size; i++) {
@@ -57,6 +57,7 @@ public class ArrayStorage {
         if (index >= 0) {
             return storage[index];
         } else {
+            System.out.println("There is no such resume in storage (uuid: " + uuid + ")");
             return null;
         }
     }
