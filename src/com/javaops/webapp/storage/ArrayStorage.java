@@ -45,15 +45,14 @@ public class ArrayStorage extends AbstractArrayStorage {
             storage[size - 1] = null;
             size--;
             System.out.println("The resume has been deleted");
-        } else
-            System.out.println("There is no such resume in storage (uuid: " + uuid + ")");
+        } else System.out.println("There is no such resume in storage (uuid: " + uuid + ")");
     }
 
     public Resume[] getAll() {
         return Arrays.copyOf(storage, size);
     }
 
-    public int getIndex(String uuid) {
+    protected int getIndex(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;
