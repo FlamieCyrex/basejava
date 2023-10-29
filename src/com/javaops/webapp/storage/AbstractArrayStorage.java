@@ -39,6 +39,7 @@ public abstract class AbstractArrayStorage implements Storage {
         int index = getIndex(uuid);
         if (index >= 0) {
             deleteResume(index);
+            storage[size - 1] = null;
             size--;
             System.out.println("The resume has been deleted");
         } else

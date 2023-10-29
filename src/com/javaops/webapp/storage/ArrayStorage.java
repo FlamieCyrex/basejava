@@ -20,7 +20,6 @@ public class ArrayStorage extends AbstractArrayStorage {
     @Override
     protected void deleteResume(int index) {
         storage[index].uuid = storage[size - 1].uuid;
-        storage[size - 1] = null;
     }
 
     @Override
