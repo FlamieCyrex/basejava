@@ -49,11 +49,10 @@ abstract class AbstractArrayStorageTest {
 
     @Test
     void saveIfOverflowStorage() {
-        final int STORAGE_LIMIT = 10000;
-        while (storage.size() < STORAGE_LIMIT) {
+        while (storage.size() < AbstractArrayStorage.STORAGE_LIMIT) {
             storage.save(new Resume());
         }
-        assertSize(STORAGE_LIMIT);
+        assertSize(AbstractArrayStorage.STORAGE_LIMIT);
         Assertions.assertThrows(StorageException.class, () -> storage.save(RESUME_4));
     }
 
@@ -69,9 +68,6 @@ abstract class AbstractArrayStorageTest {
         Assertions.assertThrows(NotExistStorageException.class, () -> storage.get(UUID_NOT_EXIST));
     }
 
-    void assertGet(Resume resume) {
-        Assertions.assertEquals(storage.get(resume.getUuid()), resume);
-    }
 
     @Test
     void delete() {
@@ -107,9 +103,6 @@ abstract class AbstractArrayStorageTest {
         assertSize(3);
     }
 
-    void assertSize(int size) {
-        Assertions.assertEquals(size, storage.size());
-    }
 
     @Test
     void getAll() {
@@ -123,5 +116,13 @@ abstract class AbstractArrayStorageTest {
         assertSize(0);
         Resume[] allResume = storage.getAll();
         Assertions.assertArrayEquals(allResume, new Resume[0]);
+    }
+
+    void assertGet(Resume resume) {
+        Assertions.assertEquals(storage.get(resume.getUuid()), resume);
+    }
+
+    void assertSize(int size) {
+        Assertions.assertEquals(size, storage.size());
     }
 }
