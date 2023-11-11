@@ -1,63 +1,37 @@
 package com.javaops.webapp.storage;
 
-import com.javaops.webapp.exception.ExistStorageException;
-import com.javaops.webapp.exception.NotExistStorageException;
-import com.javaops.webapp.exception.StorageException;
 import com.javaops.webapp.model.Resume;
 
 import java.util.Arrays;
 
-public abstract class AbstractArrayStorage implements Storage {
-    protected final int STORAGE_LIMIT = 10000;
+public abstract class AbstractArrayStorage extends AbstractStorage {
+
     protected final Resume[] storage = new Resume[STORAGE_LIMIT];
-    protected int size;
+
 
     @Override
-    public final void save(Resume r) {
-        int index = getIndex(r.getUuid()) + 1;
-        if (size >= STORAGE_LIMIT) {
-            throw new StorageException("Storage overflow", r.getUuid());
-        } else if (index > 0) {
-            throw new ExistStorageException(r.getUuid());
-        } else {
-            insertResume(r, index);
-            size++;
-            System.out.println("The resume has been saved");
-        }
+    protected void addResume(Resume r, int index) {
+        insertResume(r, index);
+        size++;
+    }
+
+
+    @Override
+    protected Resume returnResume(String uuid, int index) {
+        return storage[index];
+    }
+
+
+    @Override
+    protected void abstractDeleteResume(int index) {
+        deleteResume(index);
+        storage[size - 1] = null;
+        size--;
     }
 
     @Override
-    public final Resume get(String uuid) {
-        int index = getIndex(uuid);
-        if (index >= 0) {
-            return storage[index];
-        } else {
-            throw new NotExistStorageException(uuid);
-        }
-    }
-
-    @Override
-    public final void delete(String uuid) {
-        int index = getIndex(uuid);
-        if (index >= 0) {
-            deleteResume(index);
-            storage[size - 1] = null;
-            size--;
-            System.out.println("The resume has been deleted");
-        } else
-            throw new NotExistStorageException(uuid);
-
-    }
-
-    @Override
-    public final void update(Resume r) {
-        int index = getIndex(r.getUuid());
-        if (index >= 0) {
-            storage[index] = r;
-            System.out.println("The resume has been updated");
-        } else {
-            throw new NotExistStorageException(r.uuid);
-        }
+    protected void updateResume(Resume r, int index) {
+        storage[index] = r;
     }
 
     @Override
@@ -77,8 +51,6 @@ public abstract class AbstractArrayStorage implements Storage {
         System.out.println("The storage has been cleared");
     }
 
-
-    protected abstract int getIndex(String uuid);
 
     protected abstract void deleteResume(int index);
 
