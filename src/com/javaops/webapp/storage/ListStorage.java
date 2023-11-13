@@ -5,28 +5,27 @@ import com.javaops.webapp.model.Resume;
 import java.util.ArrayList;
 
 public class ListStorage extends AbstractStorage {
-    ArrayList<Resume> storage = new ArrayList<>();
+    private final ArrayList<Resume> storage = new ArrayList<>();
 
     @Override
-    protected void addResume(Resume r, int index) {
+    protected void abstractSaveResume(Resume r, Object searchKey) {
         storage.add(r);
     }
 
     @Override
-    protected Resume returnResume(String uuid, int index) {
+    protected Resume abstractGetResume(String uuid, Object searchKey) {
         return storage.get(getIndex(uuid));
     }
 
     @Override
-    protected void abstractDeleteResume(int index) {
-        storage.remove(index);
+    protected void abstractDeleteResume(Object searchKey) {
+        storage.remove((int) searchKey);
     }
 
     @Override
-    protected void updateResume(Resume r, int index) {
-        storage.set(index, r);
+    protected void abstractUpdateResume(Resume r, Object searchKey) {
+        storage.set((Integer) searchKey, r);
     }
-
 
     @Override
     public int size() {
@@ -40,7 +39,6 @@ public class ListStorage extends AbstractStorage {
         return allResume;
     }
 
-
     @Override
     public void clear() {
         storage.clear();
@@ -49,6 +47,20 @@ public class ListStorage extends AbstractStorage {
 
     protected int getIndex(String uuid) {
         Resume searchKey = new Resume(uuid);
-        return storage.indexOf(searchKey);
+        for (Resume r : storage) {
+            if (r.uuid.equals(searchKey.uuid)) {
+                return storage.indexOf(r);
+            }
+        }
+        return -1;
+    }
+
+    @Override
+    protected boolean isExist(Object searchKey) {
+        if ((Integer) searchKey >= 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
