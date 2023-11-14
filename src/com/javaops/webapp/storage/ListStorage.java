@@ -14,7 +14,7 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected Resume abstractGetResume(String uuid, Object searchKey) {
-        return storage.get(getIndex(uuid));
+        return storage.get((int)getSearchKey(uuid));
     }
 
     @Override
@@ -45,7 +45,7 @@ public class ListStorage extends AbstractStorage {
         System.out.println("The storage has been cleared");
     }
 
-    protected int getIndex(String uuid) {
+    protected Object getSearchKey(String uuid) {
         Resume searchKey = new Resume(uuid);
         for (Resume r : storage) {
             if (r.uuid.equals(searchKey.uuid)) {
