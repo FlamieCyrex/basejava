@@ -12,7 +12,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected int size;
 
     @Override
-    protected void abstractSaveResume(Resume r, Object searchKey) {
+    protected void doSave(Resume r, Object searchKey) {
         if (size >= STORAGE_LIMIT) {
             throw new StorageException("Storage overflow", r.getUuid());
         } else {
@@ -23,20 +23,20 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
 
     @Override
-    protected Resume abstractGetResume(String uuid, Object searchKey) {
+    protected Resume doGet(String uuid, Object searchKey) {
         return storage[(Integer) searchKey];
     }
 
 
     @Override
-    protected void abstractDeleteResume(Object searchKey) {
+    protected void doDelete(Object searchKey) {
         deleteResume((int) searchKey);
         storage[size - 1] = null;
         size--;
     }
 
     @Override
-    protected void abstractUpdateResume(Resume r, Object searchKey) {
+    protected void doUpdate(Resume r, Object searchKey) {
         storage[(Integer) searchKey] = r;
     }
 
