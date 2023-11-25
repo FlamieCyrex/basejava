@@ -6,27 +6,31 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-public class MapStorage extends AbstractStorage {
+public class MapStorageResume extends AbstractStorage {
     private final HashMap<String, Resume> Map = new HashMap<>();
 
     @Override
     protected boolean isExist(Object searchKey) {
-        return Map.containsKey((String) searchKey);
+        if (searchKey != null) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
     protected void doUpdate(Resume r, Object searchKey) {
-        Map.put((String) searchKey, r);
+        Map.put(((Resume) searchKey).getUuid(), r);
     }
 
     @Override
     protected void doDelete(Object searchKey) {
-        Map.remove((String) searchKey);
+        Map.remove(((Resume) searchKey).getUuid());
     }
 
     @Override
     protected Object getSearchKey(String uuid) {
-        return uuid;
+        return Map.get(uuid);
     }
 
     @Override
