@@ -1,36 +1,36 @@
 import com.javaops.webapp.model.Resume;
-import com.javaops.webapp.storage.ArrayStorage;
+import com.javaops.webapp.storage.MapStorage;
 
 
 /**
  * Test for your com.javaops.webapp.storage.ArrayStorage implementation
  */
 public class MainTestArrayStorage {
-    static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
+    static final MapStorage ARRAY_STORAGE = new MapStorage();
 
     public static void main(String[] args) {
-        Resume r1 = new Resume();
-        r1.uuid = "uuid1";
-        Resume r2 = new Resume();
-        r2.uuid = "uuid2";
-        Resume r3 = new Resume();
-        r3.uuid = "uuid3";
+
+        final Resume RESUME_1 = new Resume("uuid1", "fullname1");
+
+        final Resume RESUME_2 = new Resume("uuid2", "fullname2");
+
+        final Resume RESUME_3 = new Resume("uuid3", "fullname3");
 
 
-        ARRAY_STORAGE.save(r1);
-        ARRAY_STORAGE.save(r2);
-        ARRAY_STORAGE.save(r3);
+        ARRAY_STORAGE.save(RESUME_1);
+        ARRAY_STORAGE.save(RESUME_2);
+        ARRAY_STORAGE.save(RESUME_3);
 
 
-        System.out.println("Get r1: " + ARRAY_STORAGE.get(r1.uuid));
+        System.out.println("Get r1: " + ARRAY_STORAGE.get(RESUME_1.getUuid()));
         System.out.println("Size: " + ARRAY_STORAGE.size());
 
-        System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
+        System.out.println("Get dummy: " + ARRAY_STORAGE.get("uuid2"));
 
-        ARRAY_STORAGE.update(r2);
+        ARRAY_STORAGE.update(RESUME_2);
 
         printAll();
-        ARRAY_STORAGE.delete(r1.uuid);
+        ARRAY_STORAGE.delete(RESUME_1.getUuid());
         printAll();
         ARRAY_STORAGE.clear();
         printAll();
@@ -42,7 +42,7 @@ public class MainTestArrayStorage {
 
     static void printAll() {
         System.out.println("\nGet All");
-        for (Resume r : ARRAY_STORAGE.getAll()) {
+        for (Resume r : ARRAY_STORAGE.getAllSorted()) {
             System.out.println(r);
         }
     }
