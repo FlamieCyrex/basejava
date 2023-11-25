@@ -3,7 +3,6 @@ package com.javaops.webapp.storage;
 import com.javaops.webapp.model.Resume;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class ListStorage extends AbstractStorage {
@@ -37,7 +36,7 @@ public class ListStorage extends AbstractStorage {
     @Override
     public List<Resume> getAllSorted() {
         List<Resume> allSorted = storage;
-        Collections.sort(allSorted);
+        allSorted.sort(RESUME_COMPARATOR);
         return allSorted;
     }
 

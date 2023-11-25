@@ -52,7 +52,7 @@ public class MapStorageResume extends AbstractStorage {
     public List<Resume> getAllSorted() {
         Resume[] allResume = new Resume[Map.size()];
         Map.values().toArray(allResume);
-        Arrays.sort(allResume);
+        Arrays.sort(allResume,RESUME_COMPARATOR);
         return Arrays.asList(allResume);
     }
 
