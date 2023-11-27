@@ -6,58 +6,53 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-public class MapStorageResume extends AbstractStorage {
-    private final HashMap<String, Resume> Map = new HashMap<>();
+public class MapUuidStorage extends AbstractStorage {
+    private final HashMap<String, Resume> map = new HashMap<>();
 
     @Override
     protected boolean isExist(Object searchKey) {
-        if (searchKey != null) {
-            return true;
-        } else {
-            return false;
-        }
+        return map.containsKey((String) searchKey);
     }
 
     @Override
     protected void doUpdate(Resume r, Object searchKey) {
-        Map.put(((Resume) searchKey).getUuid(), r);
+        map.put((String) searchKey, r);
     }
 
     @Override
     protected void doDelete(Object searchKey) {
-        Map.remove(((Resume) searchKey).getUuid());
+        map.remove((String) searchKey);
     }
 
     @Override
     protected Object getSearchKey(String uuid) {
-        return Map.get(uuid);
+        return uuid;
     }
 
     @Override
     protected void doSave(Resume r, Object searchKey) {
-        Map.put(r.getUuid(), r);
+        map.put(r.getUuid(), r);
     }
 
     @Override
     protected Resume doGet(String uuid, Object searchKey) {
-        return Map.get(uuid);
+        return map.get(uuid);
     }
 
     @Override
     public void clear() {
-        Map.clear();
+        map.clear();
     }
 
     @Override
-    public List<Resume> getAllSorted() {
-        Resume[] allResume = new Resume[Map.size()];
-        Map.values().toArray(allResume);
-        Arrays.sort(allResume,RESUME_COMPARATOR);
+    protected List<Resume> doGetAll() {
+        Resume[] allResume = new Resume[map.size()];
+        map.values().toArray(allResume);
         return Arrays.asList(allResume);
     }
 
     @Override
     public int size() {
-        return Map.size();
+        return map.size();
     }
 }

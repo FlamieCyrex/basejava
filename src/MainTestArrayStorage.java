@@ -1,12 +1,12 @@
 import com.javaops.webapp.model.Resume;
-import com.javaops.webapp.storage.MapStorage;
+import com.javaops.webapp.storage.MapResumeStorage;
 
 
 /**
  * Test for your com.javaops.webapp.storage.ArrayStorage implementation
  */
 public class MainTestArrayStorage {
-    static final MapStorage ARRAY_STORAGE = new MapStorage();
+    static final MapResumeStorage ARRAY_STORAGE = new MapResumeStorage();
 
     public static void main(String[] args) {
 
