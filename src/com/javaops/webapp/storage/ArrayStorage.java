@@ -7,7 +7,7 @@ import com.javaops.webapp.model.Resume;
  */
 public class ArrayStorage extends AbstractArrayStorage {
 
-    protected Object getSearchKey(String uuid) {
+    protected Integer getSearchKey(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;
