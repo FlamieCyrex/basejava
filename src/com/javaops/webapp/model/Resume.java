@@ -69,5 +69,13 @@ public class Resume implements Comparable<Resume> {
     public void setFullname(String fullname) {
         this.fullname = fullname;
     }
+
+    public void setContact(ContactType contactType, String contact) {
+        contacts.put(contactType, contact);
+    }
+
+    public void setSection(SectionType sectionType, Section section) {
+        sections.put(sectionType, section);
+    }
 }
 

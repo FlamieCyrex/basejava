@@ -9,9 +9,8 @@ public class Company {
     private List<Period> periods;
 
     public Company(String name, String website, List<Period> periods) {
-        if (name == null | periods == null) {
-            throw new IllegalArgumentException();
-        }
+        Objects.requireNonNull(name, "name can`t be null");
+        Objects.requireNonNull(periods, "periods can`t be null");
         this.name = name;
         this.website = website;
         this.periods = periods;

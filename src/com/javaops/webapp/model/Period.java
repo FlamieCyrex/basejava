@@ -1,7 +1,10 @@
 package com.javaops.webapp.model;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.Objects;
+
+import static com.javaops.webapp.util.DateUtil.of;
 
 public class Period {
     private LocalDate startDate;
@@ -9,12 +12,23 @@ public class Period {
     private String title;
     private String description;
 
-    public Period(LocalDate startDate, LocalDate endDate, String title, String description) {
-        if (startDate == null | title == null) {
-            throw new IllegalArgumentException();
-        }
-        this.startDate = startDate;
-        this.endDate = endDate;
+
+    public Period(int startYear, Month startMonth, String title, String description) {
+        Objects.requireNonNull(startMonth, "startMonth can`t be null");
+        Objects.requireNonNull(title, "title can`t be null");
+        this.startDate = of(startYear, startMonth);
+        this.endDate = LocalDate.now();
+        this.title = title;
+        this.description = description;
+    }
+
+    public Period(int startYear, Month startMonth, int endYear, Month endMonth, String title, String description) {
+        Objects.requireNonNull(startMonth, "startMonth can`t be null");
+        Objects.requireNonNull(endMonth, "endMonth can`t be null");
+        Objects.requireNonNull(title, "title can`t be null");
+
+        this.startDate = of(startYear, startMonth);
+        this.endDate = of(endYear, endMonth);
         this.title = title;
         this.description = description;
     }
@@ -75,6 +89,6 @@ public class Period {
 
     @Override
     public String toString() {
-        return startDate.toString() + "--" + endDate.toString() + " " + "\n" + title + " \n" + description;
+        return startDate + "-" + endDate + " " + "\n" + title + " \n" + description;
     }
 }

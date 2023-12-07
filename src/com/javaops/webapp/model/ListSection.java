@@ -1,14 +1,13 @@
 package com.javaops.webapp.model;
 
 import java.util.List;
+import java.util.Objects;
 
 public class ListSection extends Section {
     private List<String> elements;
 
     public ListSection(List<String> elements) {
-        if (elements == null) {
-            throw new IllegalArgumentException("elements can`t be null");
-        }
+        Objects.requireNonNull(elements, "elements can`t be null");
         this.elements = elements;
     }
 

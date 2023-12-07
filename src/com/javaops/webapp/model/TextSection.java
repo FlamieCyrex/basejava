@@ -1,12 +1,12 @@
 package com.javaops.webapp.model;
 
+import java.util.Objects;
+
 public class TextSection extends Section {
     private String title;
 
     public TextSection(String title) {
-        if (title == null) {
-            throw new IllegalArgumentException();
-        }
+        Objects.requireNonNull(title, "title can`t be null");
         this.title = title;
     }
 
