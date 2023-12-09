@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 public abstract class AbstractFileStorage extends AbstractStorage<File> {
-    private File directory;
+    private final File directory;
 
     public AbstractFileStorage(File directory) {
         Objects.requireNonNull(directory, "directory can`t be null");
@@ -31,7 +31,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected void doUpdate(Resume r, File file) {
         try {
-            dowrite(r, file);
+            doWrite(r, file);
         } catch (IOException e) {
             throw new StorageException("IO error", file.getName(), e);
         }
@@ -39,10 +39,8 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected void doDelete(File file) {
-        for (File existFile : Objects.requireNonNull(directory.listFiles())) {
-            if (existFile.equals(file)) {
-                existFile.delete();
-            }
+        if (!file.delete()) {
+            throw new StorageException("No such file", file.getName());
         }
     }
 
@@ -55,7 +53,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     protected void doSave(Resume r, File file) {
         try {
             file.createNewFile();
-            dowrite(r, file);
+            doWrite(r, file);
         } catch (IOException e) {
             throw new StorageException("IO error", file.getName(), e);
         }
@@ -74,29 +72,38 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected List<Resume> doGetAll() {
         ArrayList<Resume> list = new ArrayList<>(size());
-        for (File file : Objects.requireNonNull(directory.listFiles())) {
-            try {
-                list.add(doRead(file));
-            } catch (IOException e) {
-                throw new StorageException("IO error", file.getName(), e);
+        if (directory.listFiles() != null) {
+            for (File file : directory.listFiles()) {
+                list.add(doGet(file.getName(), file));
             }
+            return list;
+        } else {
+            throw new StorageException("Directory is empty", null);
         }
-        return list;
     }
 
     @Override
     public void clear() {
-        for (File file : Objects.requireNonNull(directory.listFiles())) {
-            file.delete();
+        if (directory.listFiles() != null) {
+            for (File file : directory.listFiles()) {
+                doDelete(file);
+            }
+        } else {
+            throw new StorageException("Directory is empty", null);
         }
     }
 
     @Override
     public int size() {
-        return Objects.requireNonNull(directory.listFiles()).length;
+        if (directory.listFiles() != null) {
+            return directory.listFiles().length;
+        } else {
+            throw new StorageException("Directory is empty", null);
+        }
+
     }
 
-    protected abstract void dowrite(Resume r, File file) throws IOException;
+    protected abstract void doWrite(Resume r, File file) throws IOException;
 
     protected abstract Resume doRead(File file) throws IOException;
 }
