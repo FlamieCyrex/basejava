@@ -24,7 +24,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
 
 
     @Override
-    protected Resume doGet(String uuid, Integer searchKey) {
+    protected Resume doGet(Integer searchKey) {
         return storage[searchKey];
     }
 
@@ -60,11 +60,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
 
     @Override
     protected boolean isExist(Integer searchKey) {
-        if (searchKey >= 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return searchKey >= 0;
     }
 
     protected abstract void deleteResume(int index);

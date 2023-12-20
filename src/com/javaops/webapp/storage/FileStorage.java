@@ -2,6 +2,7 @@ package com.javaops.webapp.storage;
 
 import com.javaops.webapp.exception.StorageException;
 import com.javaops.webapp.model.Resume;
+import com.javaops.webapp.storage.serialization.SerializationStorage;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -62,7 +63,7 @@ public class FileStorage extends AbstractStorage<File> {
 
 
     @Override
-    protected Resume doGet(String uuid, File file) {
+    protected Resume doGet(File file) {
         try {
             return serializationStorage.doRead(new BufferedInputStream(new FileInputStream(file)));
         } catch (IOException e) {
@@ -72,38 +73,35 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     protected List<Resume> doGetAll() {
-        ArrayList<Resume> list = new ArrayList<>(size());
         File[] files = directory.listFiles();
-        if (files != null) {
-            for (File file : files) {
-                list.add(doGet(file.getName(), file));
-            }
-            return list;
-        } else {
+        if (files == null) {
             throw new StorageException("Directory is empty", null);
         }
+        ArrayList<Resume> list = new ArrayList<>(size());
+        for (File file : files) {
+            list.add(doGet(file));
+        }
+        return list;
     }
 
     @Override
     public void clear() {
         File[] files = directory.listFiles();
-        if (files != null) {
-            for (File file : files) {
-                doDelete(file);
-            }
-        } else {
+        if (files == null) {
             throw new StorageException("Directory is empty", null);
+        }
+        for (File file : files) {
+            doDelete(file);
         }
     }
 
     @Override
     public int size() {
         File[] files = directory.listFiles();
-        if (files != null) {
-            return files.length;
-        } else {
+        if (files == null) {
             throw new StorageException("Directory is empty", null);
         }
+        return files.length;
 
     }
 

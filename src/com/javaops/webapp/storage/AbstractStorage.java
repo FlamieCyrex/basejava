@@ -26,7 +26,7 @@ public abstract class AbstractStorage<SK> implements Storage {
     public Resume get(String uuid) {
         LOG.info("Get" + uuid);
         SK searchKey = getExistingSearchKey(uuid);
-        return doGet(uuid, searchKey);
+        return doGet(searchKey);
     }
 
     @Override
@@ -83,7 +83,7 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     protected abstract void doSave(Resume r, SK searchKey);
 
-    protected abstract Resume doGet(String uuid, SK searchKey);
+    protected abstract Resume doGet(SK searchKey);
 
     protected abstract List<Resume> doGetAll();
 }
