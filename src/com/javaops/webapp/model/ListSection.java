@@ -1,14 +1,19 @@
 package com.javaops.webapp.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.util.List;
 import java.util.Objects;
-
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ListSection extends Section {
     private List<String> elements;
 
     public ListSection(List<String> elements) {
         Objects.requireNonNull(elements, "elements can`t be null");
         this.elements = elements;
+    }
+
+    public ListSection() {
     }
 
     public List<String> getElements() {

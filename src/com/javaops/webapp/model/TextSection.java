@@ -1,13 +1,18 @@
 package com.javaops.webapp.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.util.Objects;
-
+@XmlAccessorType(XmlAccessType.FIELD)
 public class TextSection extends Section {
     private String title;
 
     public TextSection(String title) {
         Objects.requireNonNull(title, "title can`t be null");
         this.title = title;
+    }
+
+    public TextSection() {
     }
 
     public String getTitle() {

@@ -1,9 +1,12 @@
 package com.javaops.webapp.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Company implements Serializable {
     private String name;
     private String website;
@@ -15,6 +18,9 @@ public class Company implements Serializable {
         this.name = name;
         this.website = website;
         this.periods = periods;
+    }
+
+    public Company() {
     }
 
     public String getName() {
