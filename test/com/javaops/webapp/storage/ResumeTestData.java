@@ -36,15 +36,15 @@ public class ResumeTestData {
         List<Period> periodListWrike = new ArrayList<>();
         periodListWrike.add(new Period(2014, Month.MARCH, 2018, Month.JANUARY, "Старший разработчик (backend)", "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO."));
         List<Company> companyList = new ArrayList<>();
-        companyList.add(new Company("Java Online Projects", "", periodListJavaOnline));
-        companyList.add(new Company("Wrike", "", periodListWrike));
+        companyList.add(new Company("Java Online Projects", null, periodListJavaOnline));
+        companyList.add(new Company("Wrike", null, periodListWrike));
         List<Period> periodEducate1 = new ArrayList<>();
         periodEducate1.add(new Period(2013, Month.FEBRUARY, 2014, Month.FEBRUARY, "'Functional Programming Principles in Scala' by Martin Odersky", ""));
         List<Period> periodEducate2 = new ArrayList<>();
         periodEducate2.add(new Period(2012, Month.MARCH, 2013, Month.JANUARY, "Курс 'Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.'", ""));
         List<Company> learning = new ArrayList<>();
-        learning.add(new Company("Coursera", "", periodEducate1));
-        learning.add(new Company("Luxoft", "", periodEducate2));
+        learning.add(new Company("Coursera", null, periodEducate1));
+        learning.add(new Company("Luxoft", null, periodEducate2));
 
 
         Resume resumeTest = new Resume(uuid, fullname);
