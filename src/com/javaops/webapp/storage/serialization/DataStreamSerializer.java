@@ -4,10 +4,7 @@ import com.javaops.webapp.model.*;
 
 import java.io.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class DataStreamSerializer implements SerializationStorage {
 
@@ -17,14 +14,13 @@ public class DataStreamSerializer implements SerializationStorage {
             dos.writeUTF(r.getUuid());
             dos.writeUTF(r.getFullname());
             Map<ContactType, String> contacts = r.getContacts();
-            dos.writeInt(contacts.size());
-            for (Map.Entry<ContactType, String> entry : contacts.entrySet()) {
+            writeWithException(dos, contacts.entrySet(), entry -> {
                 dos.writeUTF(entry.getKey().name());
                 dos.writeUTF(entry.getValue());
-            }
-            Map<SectionType, Section> sections = r.getSections();
-            dos.writeInt(sections.size());
-            for (Map.Entry<SectionType, Section> entry : sections.entrySet()) {
+            });
+
+
+            writeWithException(dos, r.getSections().entrySet(), entry -> {
                 SectionType type = entry.getKey();
                 Section section = entry.getValue();
                 dos.writeUTF(type.name());
@@ -35,34 +31,26 @@ public class DataStreamSerializer implements SerializationStorage {
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
-                        List<String> list = ((ListSection) section).getElements();
-                        dos.writeInt(list.size());
-                        for (String str : list) {
-                            dos.writeUTF(str);
-                        }
+                        writeWithException(dos, ((ListSection) section).getElements(), element -> {
+                            dos.writeUTF(element);
+                        });
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
-                        List<Company> companies = ((CompanySection) section).getCompanies();
-                        dos.writeInt(companies.size());
-                        for (Company company : companies) {
+                        writeWithException(dos, ((CompanySection) section).getCompanies(), company -> {
                             dos.writeUTF(company.getName());
                             checkNullAndWrite(dos, company.getWebsite());
-                            List<Period> periods = company.getPeriods();
-                            dos.writeInt(periods.size());
-                            for (Period period : periods) {
+                            writeWithException(dos, company.getPeriods(), period -> {
                                 dos.writeUTF(period.getStartDate().toString());
                                 dos.writeUTF(period.getEndDate().toString());
                                 dos.writeUTF(period.getTitle());
                                 checkNullAndWrite(dos, period.getDescription());
-                            }
-                        }
+                            });
+                        });
                         break;
 
                 }
-
-
-            }
+            });
         }
     }
 
@@ -134,6 +122,17 @@ public class DataStreamSerializer implements SerializationStorage {
             return null;
         }
         return str;
+    }
+
+    private interface SerializerWriter<T> {
+        void write(T t) throws IOException;
+    }
+
+    private <T> void writeWithException(DataOutputStream dos, Collection<T> collection, SerializerWriter<T> writer) throws IOException {
+        dos.writeInt(collection.size());
+        for (T element : collection) {
+            writer.write(element);
+        }
     }
 }
 
