@@ -31,9 +31,7 @@ public class DataStreamSerializer implements SerializationStorage {
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
-                        writeWithException(dos, ((ListSection) section).getElements(), element -> {
-                            dos.writeUTF(element);
-                        });
+                        writeWithException(dos, ((ListSection) section).getElements(), dos::writeUTF);
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
@@ -61,51 +59,11 @@ public class DataStreamSerializer implements SerializationStorage {
             String uuid = dis.readUTF();
             String fullname = dis.readUTF();
             Resume resume = new Resume(uuid, fullname);
-            int contactSize = dis.readInt();
-            for (int i = 0; i < contactSize; i++) {
-                resume.setContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
-            }
-            int sectionSize = dis.readInt();
-            for (int i = 0; i < sectionSize; i++) {
+            readWithException(dis, () -> resume.setContact(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
+            readWithException(dis, () -> {
                 SectionType type = SectionType.valueOf(dis.readUTF());
-                switch (type) {
-                    case PERSONAL:
-                    case OBJECTIVE:
-                        resume.setSection(type, new TextSection(dis.readUTF()));
-                        break;
-                    case ACHIEVEMENT:
-                    case QUALIFICATIONS:
-                        int listSectionSize = dis.readInt();
-                        List<String> elementsList = new ArrayList<>(listSectionSize);
-                        for (int j = 0; j < listSectionSize; j++) {
-                            elementsList.add(dis.readUTF());
-                        }
-                        resume.setSection(type, new ListSection(elementsList));
-                        break;
-                    case EXPERIENCE:
-                    case EDUCATION:
-                        int companiesSize = dis.readInt();
-                        List<Company> companies = new ArrayList<>(companiesSize);
-                        for (int j = 0; j < companiesSize; j++) {
-                            Company company = new Company();
-                            company.setName(dis.readUTF());
-                            company.setWebsite(checkNullAndRead(dis));
-                            List<Period> periods = new ArrayList<>();
-                            int periodSize = dis.readInt();
-                            for (int k = 0; k < periodSize; k++) {
-                                Period period = new Period();
-                                period.setStartDate(LocalDate.parse(dis.readUTF()));
-                                period.setEndDate(LocalDate.parse(dis.readUTF()));
-                                period.setTitle(dis.readUTF());
-                                period.setDescription(checkNullAndRead(dis));
-                                periods.add(period);
-                            }
-                            company.setPeriods(periods);
-                            companies.add(company);
-                        }
-                        resume.setSection(type, new CompanySection(companies));
-                }
-            }
+                switchSection(dis, type, resume);
+            });
             return resume;
         }
     }
@@ -128,10 +86,58 @@ public class DataStreamSerializer implements SerializationStorage {
         void write(T t) throws IOException;
     }
 
+    private interface SerializerReader {
+        void read() throws IOException;
+    }
+
     private <T> void writeWithException(DataOutputStream dos, Collection<T> collection, SerializerWriter<T> writer) throws IOException {
         dos.writeInt(collection.size());
         for (T element : collection) {
             writer.write(element);
+        }
+    }
+
+    private void readWithException(DataInputStream dis, SerializerReader reader) throws IOException {
+        int collectionLength = dis.readInt();
+        for (int i = 0; i < collectionLength; i++) {
+            reader.read();
+        }
+
+    }
+
+    private void switchSection(DataInputStream dis, SectionType type, Resume resume) throws IOException {
+        switch (type) {
+            case PERSONAL:
+            case OBJECTIVE:
+                resume.setSection(type, new TextSection(dis.readUTF()));
+                break;
+            case ACHIEVEMENT:
+            case QUALIFICATIONS:
+                List<String> elementsList = new ArrayList<>();
+                readWithException(dis, () -> elementsList.add(dis.readUTF()));
+                resume.setSection(type, new ListSection(elementsList));
+                break;
+            case EXPERIENCE:
+            case EDUCATION:
+                List<Company> companies = new ArrayList<>();
+                readWithException(dis, () -> {
+                    Company company = new Company();
+                    company.setName(dis.readUTF());
+                    company.setWebsite(checkNullAndRead(dis));
+                    List<Period> periods = new ArrayList<>();
+                    readWithException(dis, () -> {
+                        Period period = new Period();
+                        period.setStartDate(LocalDate.parse(dis.readUTF()));
+                        period.setEndDate(LocalDate.parse(dis.readUTF()));
+                        period.setTitle(dis.readUTF());
+                        period.setDescription(checkNullAndRead(dis));
+                        periods.add(period);
+                    });
+                    company.setPeriods(periods);
+                    companies.add(company);
+                });
+                resume.setSection(type, new CompanySection(companies));
+                break;
         }
     }
 }
