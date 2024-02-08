@@ -1,5 +1,6 @@
 package com.javaops.webapp.storage;
 
+import com.javaops.webapp.Config;
 import com.javaops.webapp.exception.ExistStorageException;
 import com.javaops.webapp.exception.NotExistStorageException;
 import com.javaops.webapp.model.Resume;
@@ -14,7 +15,7 @@ import java.util.List;
 import static com.javaops.webapp.storage.ResumeTestData.fillResume;
 
 class AbstractStorageTest {
-    protected static final File STORAGE_DIR = new File("C:\\Users\\flami\\OneDrive\\Рабочий стол\\Code\\storage");
+    protected static final File STORAGE_DIR = Config.get().getStorageDir();
 
     protected final Storage storage;
     private static final String UUID_1 = "uuid1";

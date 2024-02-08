@@ -8,7 +8,7 @@ import java.util.List;
 
 public class ResumeTestData {
     public static Resume fillResume(String uuid, String fullname) {
-        String objective = "Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям";
+        /*String objective = "Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям";
         String personal = "Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры.";
         List<String> achievs = new ArrayList<>();
         achievs.add("Организация команды и успешная реализация Java проектов для сторонних заказчиков: приложения автопарк на стеке Spring Cloud/микросервисы, система мониторинга показателей спортсменов на Spring Boot, участие в проекте МЭШ на Play-2, многомодульный Spring Boot + Vaadin проект для комплексных DIY смет");
@@ -47,8 +47,10 @@ public class ResumeTestData {
         learning.add(new Company("Luxoft", null, periodEducate2));
 
 
+         */
+
         Resume resumeTest = new Resume(uuid, fullname);
-        resumeTest.setContact(ContactType.PHONE_NUMBER, "+7-922-111-44-44");
+        /*resumeTest.setContact(ContactType.PHONE_NUMBER, "+7-922-111-44-44");
         resumeTest.setContact(ContactType.SKYPE, "skype:flamiecyrex");
         resumeTest.setContact(ContactType.EMAIL, "wave-5@yandex.ru");
         resumeTest.setContact(ContactType.PROFILE_ON_LINKEDIN, "");
@@ -61,6 +63,8 @@ public class ResumeTestData {
         resumeTest.setSection(SectionType.QUALIFICATIONS, new ListSection(qualification));
         resumeTest.setSection(SectionType.EXPERIENCE, new CompanySection(companyList));
         resumeTest.setSection(SectionType.EDUCATION, new CompanySection(learning));
+
+         */
         return resumeTest;
     }
 
