@@ -5,93 +5,76 @@ import com.javaops.webapp.exception.NotExistStorageException;
 import com.javaops.webapp.exception.StorageException;
 import com.javaops.webapp.model.Resume;
 import com.javaops.webapp.sql.ConnectionFactory;
+import com.javaops.webapp.sql.SqlHelper;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SqlStorage implements Storage {
-    public final ConnectionFactory connectionFactory;
+    public final SqlHelper sqlHelper;
 
     public SqlStorage(String dbUrl, String dbUser, String dbPassword) {
-        connectionFactory = () -> DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+        sqlHelper = new SqlHelper(() -> DriverManager.getConnection(dbUrl, dbUser, dbPassword));
     }
 
     @Override
     public void clear() {
-        try (Connection conn = connectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement("DELETE FROM resume")) {
-            ps.execute();
-        } catch (SQLException e) {
-            throw new StorageException(e);
-        }
+        sqlHelper.execute("DELETE FROM resume");
 
     }
 
     @Override
     public void update(Resume r) {
-        try (Connection conn = connectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement("UPDATE resume SET full_name = ? WHERE uuid = ? ")) {
-            ps.setString(1, r.getFullname());
-            ps.setString(2, r.getUuid());
-            if (ps.executeUpdate() == 0) {
+        sqlHelper.execute("UPDATE resume SET full_name = ? WHERE uuid = ? ", preparedStatement -> {
+            preparedStatement.setString(1, r.getFullname());
+            preparedStatement.setString(2, r.getUuid());
+            if (preparedStatement.executeUpdate() == 0) {
                 throw new NotExistStorageException(r.getUuid());
             }
-        } catch (SQLException e) {
-            throw new StorageException(e);
-        }
-
+            return null;
+        });
     }
 
     @Override
     public void save(Resume r) {
-        try (Connection conn = connectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement("INSERT INTO resume(uuid, full_name) VALUES (?,?)")) {
-            ps.setString(1, r.getUuid());
-            ps.setString(2, r.getFullname());
-            ps.execute();
-        } catch (SQLException e) {
-            throw new ExistStorageException(r.getUuid());
-        }
-
+        sqlHelper.execute("INSERT INTO resume(uuid, full_name) VALUES (?,?)", preparedStatement -> {
+            preparedStatement.setString(1, r.getUuid());
+            preparedStatement.setString(2, r.getFullname());
+            preparedStatement.execute();
+            return null;
+        });
     }
+
 
     @Override
     public Resume get(String uuid) {
-        try (Connection conn = connectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement("SELECT * FROM resume r WHERE r.uuid = ?")) {
-            ps.setString(1, uuid);
-            ResultSet rs = ps.executeQuery();
+        return sqlHelper.execute("SELECT * FROM resume r WHERE r.uuid = ?", preparedStatement -> {
+            preparedStatement.setString(1, uuid);
+            ResultSet rs = preparedStatement.executeQuery();
             if (!rs.next()) {
                 throw new NotExistStorageException(uuid);
             }
             return new Resume(uuid, rs.getString("full_name"));
-        } catch (SQLException e) {
-            throw new StorageException(e);
-        }
-
+        });
     }
 
     @Override
     public void delete(String uuid) {
-        try (Connection conn = connectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement("DELETE FROM resume r WHERE r.uuid =?")) {
-            ps.setString(1, uuid);
-            if (ps.executeUpdate() == 0) {
+        sqlHelper.execute("DELETE FROM resume r WHERE r.uuid =?", preparedStatement -> {
+            preparedStatement.setString(1, uuid);
+            if (preparedStatement.executeUpdate() == 0) {
                 throw new NotExistStorageException(uuid);
             }
-        } catch (SQLException e) {
-            throw new StorageException(e);
-        }
-
+            return null;
+        });
     }
 
     @Override
     public List<Resume> getAllSorted() {
-        List<Resume> list = new ArrayList<>();
-        try (Connection conn = connectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement("SELECT * FROM resume r ORDER BY full_name")) {
-            ResultSet rs = ps.executeQuery();
+        return sqlHelper.execute("SELECT * FROM resume r ORDER BY full_name", preparedStatement -> {
+            List<Resume> list = new ArrayList<>();
+            ResultSet rs = preparedStatement.executeQuery();
             if (!rs.next()) {
                 return list;
             }
@@ -99,23 +82,18 @@ public class SqlStorage implements Storage {
                 list.add(new Resume(rs.getString("uuid").trim(), rs.getString("full_name")));
             } while (rs.next());
             return list;
-        } catch (SQLException e) {
-            throw new StorageException(e);
-        }
+        });
     }
 
     @Override
     public int size() {
-        try (Connection conn = connectionFactory.getConnection();
-             PreparedStatement s = conn.prepareStatement("SELECT COUNT(*) FROM resume ")) {
-            ResultSet rs = s.executeQuery();
+        return sqlHelper.execute("SELECT COUNT(*) FROM resume", preparedStatement -> {
+            ResultSet rs = preparedStatement.executeQuery();
             if (!rs.next()) {
                 return 0;
             } else {
                 return rs.getInt(1);
             }
-        } catch (SQLException e) {
-            throw new StorageException(e);
-        }
+        });
     }
 }
