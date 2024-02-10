@@ -72,12 +72,9 @@ public class SqlStorage implements Storage {
         return sqlHelper.execute("SELECT * FROM resume r ORDER BY full_name", preparedStatement -> {
             List<Resume> list = new ArrayList<>();
             ResultSet rs = preparedStatement.executeQuery();
-            if (!rs.next()) {
-                return list;
-            }
-            do {
-                list.add(new Resume(rs.getString("uuid").trim(), rs.getString("full_name")));
-            } while (rs.next());
+           while (rs.next()) {
+               list.add(new Resume(rs.getString("uuid"), rs.getString("full_name")));
+           }
             return list;
         });
     }
@@ -86,11 +83,7 @@ public class SqlStorage implements Storage {
     public int size() {
         return sqlHelper.execute("SELECT COUNT(*) FROM resume", preparedStatement -> {
             ResultSet rs = preparedStatement.executeQuery();
-            if (!rs.next()) {
-                return 0;
-            } else {
-                return rs.getInt(1);
-            }
+            return !rs.next() ? 0 : rs.getInt(1);
         });
     }
 }
