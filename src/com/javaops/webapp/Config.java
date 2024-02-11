@@ -12,8 +12,8 @@ import java.util.Properties;
 public class Config {
     private static final File PROPS = new File("config\\resume.properties");
     private static final Config INSTANCE = new Config();
-    private Properties properties = new Properties();
-    private File storageDir;
+    private final Properties properties = new Properties();
+    private final File storageDir;
     private Storage storage;
 
     public static Config get() {
