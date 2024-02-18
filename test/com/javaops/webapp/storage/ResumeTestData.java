@@ -50,10 +50,10 @@ public class ResumeTestData {
          */
 
         Resume resumeTest = new Resume(uuid, fullname);
-        /*resumeTest.setContact(ContactType.PHONE_NUMBER, "+7-922-111-44-44");
+        resumeTest.setContact(ContactType.PHONE_NUMBER, "+7-922-111-44-44");
         resumeTest.setContact(ContactType.SKYPE, "skype:flamiecyrex");
         resumeTest.setContact(ContactType.EMAIL, "wave-5@yandex.ru");
-        resumeTest.setContact(ContactType.PROFILE_ON_LINKEDIN, "");
+        /*resumeTest.setContact(ContactType.PROFILE_ON_LINKEDIN, "");
         resumeTest.setContact(ContactType.PROFILE_ON_GITHUB, "");
         resumeTest.setContact(ContactType.PROFILE_ON_STACKOVERFLOW, "");
         resumeTest.setContact(ContactType.HOMEPAGE, "");

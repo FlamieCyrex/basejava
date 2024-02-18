@@ -10,15 +10,14 @@ public enum ContactType {
     PROFILE_ON_STACKOVERFLOW("Профиль Stackoverflow"),
     HOMEPAGE("Домашняя страница");
     private String contact;
-    private String link;
+
 
     ContactType(String contact) {
         this.contact = contact;
     }
 
-    ContactType(String contact, String link) {
-        this.contact = contact;
-        this.link = link;
+    public String getContact() {
+        return contact;
     }
 
     @Override
