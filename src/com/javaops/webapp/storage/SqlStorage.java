@@ -30,7 +30,7 @@ public class SqlStorage implements Storage {
                     throw new NotExistStorageException(r.getUuid());
                 }
             }
-            deleteContacts(r);
+            deleteContacts(conn, r);
             createContact(conn, r);
             return null;
         });
@@ -128,7 +128,7 @@ public class SqlStorage implements Storage {
         }
     }
 
-    public void deleteContacts(Resume r) {
+    public void deleteContacts(Connection conn, Resume r) {
         sqlHelper.execute("DELETE FROM contact WHERE resume_uuid=?", preparedStatement -> {
             preparedStatement.setString(1, r.getUuid());
             preparedStatement.execute();
