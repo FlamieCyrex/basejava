@@ -8,7 +8,7 @@ import java.util.List;
 
 public class ResumeTestData {
     public static Resume fillResume(String uuid, String fullname) {
-        /*String objective = "Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям";
+        String objective = "Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям";
         String personal = "Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры.";
         List<String> achievs = new ArrayList<>();
         achievs.add("Организация команды и успешная реализация Java проектов для сторонних заказчиков: приложения автопарк на стеке Spring Cloud/микросервисы, система мониторинга показателей спортсменов на Spring Boot, участие в проекте МЭШ на Play-2, многомодульный Spring Boot + Vaadin проект для комплексных DIY смет");
@@ -30,7 +30,7 @@ public class ResumeTestData {
         qualification.add("Scala: SBT, Play2, Specs2, Anorm, Spray, Akka");
         qualification.add("Отличное знание и опыт применения концепций ООП, SOA, шаблонов проектрирования, архитектурных шаблонов, UML, функционального программирования");
         qualification.add("Родной русский, английский \"upper intermediate\"");
-        List<Period> periodListJavaOnline = new ArrayList<>();
+        /*List<Period> periodListJavaOnline = new ArrayList<>();
         periodListJavaOnline.add(new Period(2016, Month.NOVEMBER, "Автор проекта.", "Создание, организация и проведение Java онлайн проектов и стажировок."));
         periodListJavaOnline.add(new Period(2016, Month.NOVEMBER, 2016, Month.DECEMBER, "Инженер", "Example for 2."));
         List<Period> periodListWrike = new ArrayList<>();
@@ -53,7 +53,7 @@ public class ResumeTestData {
         resumeTest.setContact(ContactType.PHONE_NUMBER, "+7-922-111-44-44");
         resumeTest.setContact(ContactType.SKYPE, "skype:flamiecyrex");
         resumeTest.setContact(ContactType.EMAIL, "wave-5@yandex.ru");
-        /*resumeTest.setContact(ContactType.PROFILE_ON_LINKEDIN, "");
+        resumeTest.setContact(ContactType.PROFILE_ON_LINKEDIN, "");
         resumeTest.setContact(ContactType.PROFILE_ON_GITHUB, "");
         resumeTest.setContact(ContactType.PROFILE_ON_STACKOVERFLOW, "");
         resumeTest.setContact(ContactType.HOMEPAGE, "");
@@ -61,7 +61,7 @@ public class ResumeTestData {
         resumeTest.setSection(SectionType.PERSONAL, new TextSection(personal));
         resumeTest.setSection(SectionType.ACHIEVEMENT, new ListSection(achievs));
         resumeTest.setSection(SectionType.QUALIFICATIONS, new ListSection(qualification));
-        resumeTest.setSection(SectionType.EXPERIENCE, new CompanySection(companyList));
+        /*resumeTest.setSection(SectionType.EXPERIENCE, new CompanySection(companyList));
         resumeTest.setSection(SectionType.EDUCATION, new CompanySection(learning));
 
          */
